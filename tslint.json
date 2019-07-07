@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "tslint-config-airbnb",
+    "tslint-react"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "**/*.json"
+    ]
+  },
+  "rules": {
+    "import-name": false,
+    "variable-name": false
+  },
+  "jsRules": {}
+}
