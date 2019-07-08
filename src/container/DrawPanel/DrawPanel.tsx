@@ -2,16 +2,16 @@ import React, { Component, createRef } from 'react';
 import * as d3 from 'd3';
 import DrawLayer from '../../services/DrawLayer';
 
-interface IProps {
+interface DrawPanelProps {
 }
 
-interface IState {
+interface DrawPanelState {
   area: d3.Selection<SVGElement, any, any, any> | null;
 }
 
-class DrawPanel extends Component<IProps, IState> {
+class DrawPanel extends Component<DrawPanelProps, DrawPanelState> {
   private ref = createRef<HTMLDivElement>();
-  constructor(props: IProps) {
+  constructor(props: DrawPanelProps) {
     super(props);
     this.state = {
       area: null,

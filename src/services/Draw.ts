@@ -12,16 +12,7 @@ class Draw {
     this.svg = props.svg;
   }
   drawNode(node: INode) {
-
-    let { nodeConf } = Config;
-    if (node) {
-      nodeConf = {
-        ...nodeConf,
-        ...node,
-      };
-    }
-    const { coordinate, styles, radius } = nodeConf;
-
+    const { coordinate, styles, radius } = node;
     const g = this.svg.append('g')
       .attr('transform', `translate(${coordinate.x}, ${coordinate.y})`)
       .append('circle')
