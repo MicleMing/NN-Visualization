@@ -37,10 +37,10 @@ class Draw {
 
     const line = this.svg.append('line')
       .style('stroke', '#999')
-      .attr('x1', from.coordinate.x + from.radius / Math.sqrt(2))
-      .attr('y1', from.coordinate.y + from.radius / Math.sqrt(2))
-      .attr('x2', to.coordinate.x - to.radius / Math.sqrt(2))
-      .attr('y2', to.coordinate.y - to.radius / Math.sqrt(2));
+      .attr('x1', from.coordinate.x + from.radius)
+      .attr('y1', from.coordinate.y)
+      .attr('x2', to.coordinate.x - to.radius)
+      .attr('y2', to.coordinate.y);
 
     return line;
   }

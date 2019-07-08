@@ -23,8 +23,8 @@ class DrawPanel extends Component<IProps, IState> {
       .attr('height', 500);
     const draw = new DrawLayer({ svg });
     const layer1 = draw.drawNodes(3, 0, 5);
-    const layer2 = draw.drawNodes(8, 8, 0);
-    const layer3 = draw.drawNodes(4, 16, 4);
+    const layer2 = draw.drawNodes(8, 20, 0);
+    const layer3 = draw.drawNodes(4, 40, 4);
 
     draw.drawLines(layer1, layer2);
     draw.drawLines(layer2, layer3);

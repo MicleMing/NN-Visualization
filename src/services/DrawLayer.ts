@@ -14,31 +14,33 @@ class DrawLayer {
     this.draw = new Draw({ svg });
   }
   drawNodes(num: number, xbias: number, ybias: number) {
-    const nodes: INode[] = _.map(new Array(num), (ele, i) => {
-      const node: INode = _.cloneDeep(Config.nodeConf);
-      const unit = node.radius;
-      const { coordinate } = node;
-      const x = coordinate.x + xbias * unit;
-      const y = coordinate.y + i * 4 * unit + unit * ybias * 2;
+    const nodes: INode[] = _.map(
+      _.range(0, num),
+      (i) => {
+        const node: INode = _.cloneDeep(Config.nodeConf);
+        const unit = node.radius;
+        const { coordinate } = node;
+        const x = coordinate.x + xbias * unit;
+        const y = coordinate.y + i * 4 * unit + unit * ybias * 2;
 
-      const conf = {
-        ...node,
-        coordinate: {
-          y,
-          x,
-        },
-      };
+        const conf = {
+          ...node,
+          coordinate: {
+            y,
+            x,
+          },
+        };
 
-      this.draw.drawNode(conf);
-      return conf;
-    });
+        this.draw.drawNode(conf);
+        return conf;
+      });
     return nodes;
   }
 
   drawLines(from: INode[], to: INode[]) {
-    from.forEach(fnode => {
-      to.forEach(tnode => this.draw.drawLine(fnode, tnode));
-    });
+    from.forEach(
+      fnode => to.forEach(tnode => this.draw.drawLine(fnode, tnode)),
+    );
   }
 }
 
