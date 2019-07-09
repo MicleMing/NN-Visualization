@@ -2,6 +2,12 @@ import React, { Component, createRef } from 'react';
 import * as d3 from 'd3';
 import styled from '../../styled';
 import DrawLayer from '../../services/DrawNN/DrawLayer';
+import emitter, { NNEvent } from '../../services/EventEmitter';
+
+interface ILayer {
+  id: string;
+  nodes: number;
+}
 
 interface DrawPanelProps {
 }
@@ -26,15 +32,31 @@ class DrawPanel extends Component<DrawPanelProps, DrawPanelState> {
       .attr('width', 800)
       .attr('height', 500);
     const draw = new DrawLayer({ svg });
-    const layer1 = draw.drawNodes(3, 0, 5);
-    const layer2 = draw.drawNodes(8, 20, 0);
-    const layer3 = draw.drawNodes(4, 40, 4);
-    const layer4 = draw.drawNodes(1, 54, 7);
+    this.onNNLayerChange(draw);
+  }
 
-    draw.drawLines(layer1, layer2);
-    draw.drawLines(layer2, layer3);
-    draw.drawLines(layer3, layer4);
+  drawLayers(draw: DrawLayer, layers: ILayer[]) {
+    const maxValue = Math.max(...layers.map(layer => layer.nodes));
+    const nlayers: any = [];
+    layers.forEach((layer, index) => {
+      const { nodes } = layer;
+      const nlayer = draw.drawNodes(nodes, index * 16, maxValue - nodes);
+      nlayers.push(nlayer);
+    });
 
+    nlayers.forEach((nlayer, index) => {
+      const nextLayer = nlayers[index + 1];
+      if (nextLayer) {
+        draw.drawLines(nlayer, nextLayer);
+      }
+    });
+  }
+
+  onNNLayerChange(draw: DrawLayer) {
+    emitter.on(NNEvent.LayerChange, (layers) => {
+      draw.clear();
+      this.drawLayers(draw, layers);
+    });
   }
   render() {
     return <StyledWrapper ref={this.ref} />;

@@ -3,6 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import AddOutlined from '@material-ui/icons/AddCircleOutline';
 import IconButton from '@material-ui/core/IconButton';
 
+import emitter, { NNEvent } from '../../services/EventEmitter';
+
 import uuid from '../../services/uuid';
 import NNLayer from './NNLayer';
 
@@ -24,15 +26,23 @@ class NNPanel extends Component<NNPanelProps, NNPanelState> {
   constructor(props: NNPanelProps) {
     super(props);
     this.state = {
-      layers: [{
-        id: uuid.generate(),
-        nodes: 1,
-      }],
+      layers: [],
     };
     this.removeLayer = this.removeLayer.bind(this);
     this.genNNLayer = this.genNNLayer.bind(this);
     this.changeLayer = this.changeLayer.bind(this);
     this.addLayer = this.addLayer.bind(this);
+  }
+
+  componentDidMount() {
+    const initLayer: ILayer[] = [
+      {
+        id: uuid.generate(),
+        nodes: 1,
+      },
+    ];
+    this.setState({ layers: initLayer });
+    setTimeout(() => emitter.emit(NNEvent.LayerChange, initLayer));
   }
 
   removeLayer(id: string) {
@@ -41,6 +51,7 @@ class NNPanel extends Component<NNPanelProps, NNPanelState> {
     this.setState({
       layers: nlayers,
     });
+    emitter.emit(NNEvent.LayerChange, nlayers);
   }
 
   changeLayer(id: string, value: number) {
@@ -54,14 +65,16 @@ class NNPanel extends Component<NNPanelProps, NNPanelState> {
       };
     });
     this.setState({ layers: nlayers });
+    emitter.emit(NNEvent.LayerChange, nlayers);
   }
 
   addLayer() {
     const { layers } = this.state;
-    const nlayer = layers.concat({ id: uuid.generate(), nodes: 1 });
+    const nlayers = layers.concat({ id: uuid.generate(), nodes: 1 });
     this.setState({
-      layers: nlayer,
+      layers: nlayers,
     });
+    emitter.emit(NNEvent.LayerChange, nlayers);
   }
 
   genNNLayer() {

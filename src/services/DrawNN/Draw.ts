@@ -7,7 +7,7 @@ interface IDraw {
 }
 
 class Draw {
-  private svg;
+  public svg;
   constructor(props: IDraw) {
     this.svg = props.svg;
   }

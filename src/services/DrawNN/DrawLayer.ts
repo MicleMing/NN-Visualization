@@ -42,6 +42,11 @@ class DrawLayer {
       fnode => to.forEach(tnode => this.draw.drawLine(fnode, tnode)),
     );
   }
+
+  clear() {
+    this.draw.svg.selectAll('g').remove();
+    this.draw.svg.selectAll('line').remove();
+  }
 }
 
 export default DrawLayer;
