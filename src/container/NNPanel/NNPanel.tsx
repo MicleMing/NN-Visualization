@@ -1,29 +1,81 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
+import uuid from '../../services/uuid';
 import NNLayer from './NNLayer';
+
+interface ILayer {
+  id: string;
+  nodes: number;
+}
 
 interface NNPanelProps {
 
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-  }),
-);
+interface NNPanelState {
+  layers: ILayer[];
+}
 
-const NNPanel = (props: NNPanelProps) => {
-  const classes = useStyles();
-  return (
-    <Grid container className={classes.root}>
-      <NNLayer />
-    </Grid>
-  );
-};
+class NNPanel extends Component<NNPanelProps, NNPanelState> {
+
+  constructor(props: NNPanelProps) {
+    super(props);
+    this.state = {
+      layers: [{
+        id: uuid.generate(),
+        nodes: 1,
+      }],
+    };
+    this.removeLayer = this.removeLayer.bind(this);
+    this.genNNLayer = this.genNNLayer.bind(this);
+    this.changeLayer = this.changeLayer.bind(this);
+  }
+
+  removeLayer(id: string) {
+    const { layers } = this.state;
+    const nlayers = layers.filter(layer => layer.id !== id);
+    this.setState({
+      layers: nlayers,
+    });
+  }
+
+  changeLayer(id: string, value: number) {
+    const { layers } = this.state;
+    const nlayers = layers.map((layer) => {
+      if (layer.id === id) {
+        layer.nodes = value;
+      }
+      return {
+        ...layer,
+      };
+    });
+    this.setState({ layers: nlayers })
+  }
+
+  genNNLayer() {
+    const { layers } = this.state;
+    return layers.map((layer) => {
+      const { id, nodes } = layer;
+      return (
+        <NNLayer
+          key={uuid.generate()}
+          nodes={nodes}
+          id={id}
+          remove={this.removeLayer}
+          onChange={this.changeLayer}
+        />
+      );
+    });
+  }
+
+  render() {
+    return (
+      <Grid container>
+        {this.genNNLayer()}
+      </Grid>
+    );
+  }
+}
 
 export default NNPanel;
