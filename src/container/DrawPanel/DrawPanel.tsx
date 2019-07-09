@@ -1,7 +1,7 @@
 import React, { Component, createRef } from 'react';
 import * as d3 from 'd3';
 import styled from '../../styled';
-import DrawLayer from '../../services/DrawLayer';
+import DrawLayer from '../../services/DrawNN/DrawLayer';
 
 interface DrawPanelProps {
 }

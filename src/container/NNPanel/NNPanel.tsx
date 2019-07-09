@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
+import AddOutlined from '@material-ui/icons/AddCircleOutline';
+import IconButton from '@material-ui/core/IconButton';
 
 import uuid from '../../services/uuid';
 import NNLayer from './NNLayer';
@@ -30,6 +32,7 @@ class NNPanel extends Component<NNPanelProps, NNPanelState> {
     this.removeLayer = this.removeLayer.bind(this);
     this.genNNLayer = this.genNNLayer.bind(this);
     this.changeLayer = this.changeLayer.bind(this);
+    this.addLayer = this.addLayer.bind(this);
   }
 
   removeLayer(id: string) {
@@ -50,18 +53,27 @@ class NNPanel extends Component<NNPanelProps, NNPanelState> {
         ...layer,
       };
     });
-    this.setState({ layers: nlayers })
+    this.setState({ layers: nlayers });
+  }
+
+  addLayer() {
+    const { layers } = this.state;
+    const nlayer = layers.concat({ id: uuid.generate(), nodes: 1 });
+    this.setState({
+      layers: nlayer,
+    });
   }
 
   genNNLayer() {
     const { layers } = this.state;
-    return layers.map((layer) => {
+    return layers.map((layer, index) => {
       const { id, nodes } = layer;
       return (
         <NNLayer
           key={uuid.generate()}
           nodes={nodes}
           id={id}
+          index={index}
           remove={this.removeLayer}
           onChange={this.changeLayer}
         />
@@ -73,6 +85,11 @@ class NNPanel extends Component<NNPanelProps, NNPanelState> {
     return (
       <Grid container>
         {this.genNNLayer()}
+        <Grid item>
+          <IconButton onClick={this.addLayer} color="primary" aria-label="AddOutlined">
+            <AddOutlined />
+          </IconButton>
+        </Grid>
       </Grid>
     );
   }

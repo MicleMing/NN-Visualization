@@ -8,6 +8,7 @@ import DeleteRounded from '@material-ui/icons/DeleteRounded';
 interface NNLayerProps {
   id: string;
   nodes: number;
+  index: number;
   remove: (id: string) => void;
   onChange: (id: string, value: number) => void;
 }
@@ -40,7 +41,7 @@ const NNLayer = (props: NNLayerProps) => {
   const onRemove = () => props.remove(props.id);
   return (
     <Grid container>
-      <Grid item className={classes.label}> Layer1</Grid>
+      <Grid item className={classes.label}> Layer {props.index}</Grid>
       <Grid item className={classes.textField}>
         <TextField
           id="nodes-number"
