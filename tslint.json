@@ -10,7 +10,9 @@
   },
   "rules": {
     "import-name": false,
-    "variable-name": false
+    "variable-name": false,
+    "jsx-boolean-value": false,
+    "jsx-no-multiline-js": false
   },
   "jsRules": {}
 }
