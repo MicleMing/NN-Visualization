@@ -28,9 +28,16 @@ class DrawPanel extends Component<DrawPanelProps, DrawPanelState> {
     };
   }
   componentDidMount() {
+
     const svg = d3.select(this.ref.current).append('svg')
       .attr('width', 800)
-      .attr('height', 500);
+      .attr('height', 800)
+      .call(d3.zoom().on('zoom', zoomed));
+
+    function zoomed() {
+      svg.attr('transform', `translate(${d3.event.transform.x}, ${d3.event.transform.y})`);
+      svg.attr('transform', `scale(${d3.event.transform.k})`);
+    }
     const draw = new DrawLayer({ svg });
     this.onNNLayerChange(draw);
   }
