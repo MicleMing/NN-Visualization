@@ -6,5 +6,6 @@ export interface ICoordinate {
 export interface INode {
   coordinate: ICoordinate;
   radius: number;
-  styles?: Object;
+  fill: string;
+  stroke: string;
 }

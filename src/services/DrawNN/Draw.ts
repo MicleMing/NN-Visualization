@@ -11,17 +11,24 @@ class Draw {
   constructor(props: IDraw) {
     this.svg = props.svg;
   }
-  drawNode(node: INode) {
-    const { coordinate, styles, radius } = node;
-    const g = this.svg.append('g')
-      .attr('transform', `translate(${coordinate.x}, ${coordinate.y})`)
+  drawNodes(nodes: INode[], id: string) {
+    const enter = this.svg.selectAll(`g#${id}`).data(nodes).enter();
+    enter.append('g')
+      .attr('id', id)
+      .attr('transform', (node) => {
+        const { coordinate } = node;
+        return `translate(${coordinate.x}, ${coordinate.y})`;
+      })
       .append('circle')
-      .attr('r', radius);
+      .attr('r', (node) => {
+        const { radius } = node;
+        return radius;
+      })
+      .style('fill', node => node.fill)
+      .style('stroke', node => node.stroke);
 
-    for (const key in styles) {
-      g.style(key, styles[key]);
-    }
-    return g;
+    const exit = enter.exit();
+    exit.remove();
   }
 
   drawLine(from: INode, to: INode) {

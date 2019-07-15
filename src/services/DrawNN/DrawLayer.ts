@@ -13,7 +13,7 @@ class DrawLayer {
     const { svg } = props;
     this.draw = new Draw({ svg });
   }
-  drawNodes(num: number, xbias: number, ybias: number) {
+  drawNodes(layerId: string, num: number, xbias: number, ybias: number) {
     const nodes: INode[] = _.map(
       _.range(0, num),
       (i) => {
@@ -31,9 +31,11 @@ class DrawLayer {
           },
         };
 
-        this.draw.drawNode(conf);
         return conf;
       });
+
+    this.draw.drawNodes(nodes, layerId);
+
     return nodes;
   }
 

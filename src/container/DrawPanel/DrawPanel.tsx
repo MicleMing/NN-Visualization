@@ -47,7 +47,7 @@ class DrawPanel extends Component<DrawPanelProps, DrawPanelState> {
     const nlayers: any = [];
     layers.forEach((layer, index) => {
       const { nodes } = layer;
-      const nlayer = draw.drawNodes(nodes, index * 16, maxValue - nodes);
+      const nlayer = draw.drawNodes(`layer_${index}`, nodes, index * 16, maxValue - nodes);
       nlayers.push(nlayer);
     });
 
