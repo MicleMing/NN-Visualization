@@ -44,7 +44,7 @@ const NNLayer = (props: NNLayerProps) => {
       <Grid item className={classes.label}> Layer {props.index}</Grid>
       <Grid item className={classes.textField}>
         <TextField
-          id="nodes-number"
+          id={`nodes-number-${props.id}`}
           value={value}
           onChange={handleChange}
           type="number"

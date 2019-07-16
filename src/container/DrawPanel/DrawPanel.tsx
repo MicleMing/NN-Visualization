@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react';
 import * as d3 from 'd3';
 import styled from '../../styled';
 import DrawLayer from '../../services/DrawNN/DrawLayer';
-import emitter, { NNEvent } from '../../services/EventEmitter';
+import eventSteam, { NNEvent } from '../../services/EventStream';
 
 interface ILayer {
   id: string;
@@ -21,6 +21,7 @@ const StyledWrapper = styled.div`
 
 class DrawPanel extends Component<DrawPanelProps, DrawPanelState> {
   private ref = createRef<HTMLDivElement>();
+  private subscription: any;
   constructor(props: DrawPanelProps) {
     super(props);
     this.state = {
@@ -39,7 +40,14 @@ class DrawPanel extends Component<DrawPanelProps, DrawPanelState> {
       svg.attr('transform', d3.event.transform);
     }
     const draw = new DrawLayer({ svg });
-    this.onNNLayerChange(draw);
+    this.subscription = eventSteam.subscribe(NNEvent.LayerChange, (data) => {
+      draw.clear();
+      this.drawLayers(draw, data);
+    });
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   drawLayers(draw: DrawLayer, layers: ILayer[]) {
@@ -56,13 +64,6 @@ class DrawPanel extends Component<DrawPanelProps, DrawPanelState> {
       if (nextLayer) {
         draw.drawLines(nlayer, nextLayer);
       }
-    });
-  }
-
-  onNNLayerChange(draw: DrawLayer) {
-    emitter.on(NNEvent.LayerChange, (layers) => {
-      draw.clear();
-      this.drawLayers(draw, layers);
     });
   }
   render() {

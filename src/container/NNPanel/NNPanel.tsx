@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import AddOutlined from '@material-ui/icons/AddCircleOutline';
 import IconButton from '@material-ui/core/IconButton';
 
-import emitter, { NNEvent } from '../../services/EventEmitter';
+import eventStream, { NNEvent } from '../../services/EventStream';
 
 import uuid from '../../services/uuid';
 import NNLayer from './NNLayer';
@@ -42,7 +42,10 @@ class NNPanel extends Component<NNPanelProps, NNPanelState> {
       },
     ];
     this.setState({ layers: initLayer });
-    setTimeout(() => emitter.emit(NNEvent.LayerChange, initLayer));
+    setTimeout(() => eventStream.send({
+      type: NNEvent.LayerChange,
+      payload: initLayer,
+    }));
   }
 
   removeLayer(id: string) {
@@ -51,7 +54,10 @@ class NNPanel extends Component<NNPanelProps, NNPanelState> {
     this.setState({
       layers: nlayers,
     });
-    emitter.emit(NNEvent.LayerChange, nlayers);
+    eventStream.send({
+      type: NNEvent.LayerChange,
+      payload: nlayers,
+    });
   }
 
   changeLayer(id: string, value: number) {
@@ -65,7 +71,10 @@ class NNPanel extends Component<NNPanelProps, NNPanelState> {
       };
     });
     this.setState({ layers: nlayers });
-    emitter.emit(NNEvent.LayerChange, nlayers);
+    eventStream.send({
+      type: NNEvent.LayerChange,
+      payload: nlayers,
+    });
   }
 
   addLayer() {
@@ -74,7 +83,10 @@ class NNPanel extends Component<NNPanelProps, NNPanelState> {
     this.setState({
       layers: nlayers,
     });
-    emitter.emit(NNEvent.LayerChange, nlayers);
+    eventStream.send({
+      type: NNEvent.LayerChange,
+      payload: nlayers,
+    });
   }
 
   genNNLayer() {
