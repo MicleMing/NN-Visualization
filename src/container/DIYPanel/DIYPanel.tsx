@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
+import eventStream, { NNEvent } from '../../services/EventStream';
+
 import NNPanel from '../NNPanel';
+import ThreeDPanel from '../ThreeDPanel';
+
 import styled from '../../styled';
 
 interface DIYPanelProps {
@@ -31,16 +35,22 @@ class DIYPanel extends Component<DIYPanelProps, DIYPanelState> {
     this.setState({
       value: newValue,
     });
+    eventStream.send({
+      type: NNEvent.PanelChange,
+      payload: newValue,
+    });
   }
 
   render() {
+    const { value } = this.state;
     return (
       <StyledWrapper>
-        <Tabs value={this.state.value} onChange={this.handleChange}>
+        <Tabs value={value} onChange={this.handleChange}>
+          <Tab label="3D" />
           <Tab label="NN_Layer" />
-          <Tab label="TODO" />
         </Tabs>
-        <NNPanel />
+        {value === 0 && <ThreeDPanel />}
+        {value === 1 && <NNPanel />}
       </StyledWrapper>
     );
   }

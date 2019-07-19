@@ -2,6 +2,7 @@ import { Subject } from 'rxjs';
 
 export enum NNEvent {
   LayerChange = 'NN_LAYER_CHANGE',
+  PanelChange = 'PANEL_CHANGE',
 }
 
 interface IData {

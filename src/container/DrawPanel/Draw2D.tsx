@@ -9,20 +9,20 @@ interface ILayer {
   nodes: number;
 }
 
-interface DrawPanelProps {
+interface Draw2DProps {
 }
 
-interface DrawPanelState {
+interface Draw2DState {
   area: d3.Selection<SVGElement, any, any, any> | null;
 }
 
 const StyledWrapper = styled.div`
 `;
 
-class DrawPanel extends Component<DrawPanelProps, DrawPanelState> {
+class Draw2D extends Component<Draw2DProps, Draw2DState> {
   private ref = createRef<HTMLDivElement>();
   private subscription: any;
-  constructor(props: DrawPanelProps) {
+  constructor(props: Draw2DProps) {
     super(props);
     this.state = {
       area: null,
@@ -71,4 +71,4 @@ class DrawPanel extends Component<DrawPanelProps, DrawPanelState> {
   }
 }
 
-export default DrawPanel;
+export default Draw2D;
